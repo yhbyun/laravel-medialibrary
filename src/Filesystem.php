@@ -4,6 +4,7 @@ namespace Spatie\MediaLibrary;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Filesystem\Factory;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Events\MediaHasBeenAdded;
 use Spatie\MediaLibrary\Helpers\File;
 use Spatie\MediaLibrary\PathGenerator\PathGeneratorFactory;
@@ -39,7 +40,9 @@ class Filesystem
 
         event(new MediaHasBeenAdded($media));
 
-        app(FileManipulator::class)->createDerivedFiles($media);
+        if ($this->config->get('laravel-medialibrary.enable_file_manipulator', false)) {
+            app(FileManipulator::class)->createDerivedFiles($media);
+        }
     }
 
     /*
