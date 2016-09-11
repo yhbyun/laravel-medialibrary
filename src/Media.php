@@ -51,17 +51,15 @@ class Media extends Model
      * Get the original Url to a media-file.
      *
      * @param string $conversionName
-     *
+     * @param Model $model model that this media is attached to
      * @return string
-     *
-     * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
      */
-    public function getUrl(string $conversionName = '') : string
+    public function getUrl(string $conversionName = '', Model $model = null) : string
     {
         $urlGenerator = UrlGeneratorFactory::createForMedia($this);
 
         if ($conversionName !== '') {
-            $urlGenerator->setConversion(ConversionCollection::createForMedia($this)->getByName($conversionName));
+            $urlGenerator->setConversion(ConversionCollection::createForMedia($this, $model)->getByName($conversionName));
         }
 
         return $urlGenerator->getUrl();
@@ -71,17 +69,15 @@ class Media extends Model
      * Get the original path to a media-file.
      *
      * @param string $conversionName
-     *
+     * @param Model $model model that this media is attached to
      * @return string
-     *
-     * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
      */
-    public function getPath(string $conversionName = '') : string
+    public function getPath(string $conversionName = '', Model $model = null) : string
     {
         $urlGenerator = UrlGeneratorFactory::createForMedia($this);
 
         if ($conversionName != '') {
-            $urlGenerator->setConversion(ConversionCollection::createForMedia($this)->getByName($conversionName));
+            $urlGenerator->setConversion(ConversionCollection::createForMedia($this, $model)->getByName($conversionName));
         }
 
         return $urlGenerator->getPath();

@@ -4,6 +4,7 @@ namespace Spatie\MediaLibrary;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Filesystem\Factory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Events\MediaHasBeenAdded;
 use Spatie\MediaLibrary\Helpers\File;
@@ -34,15 +35,13 @@ class Filesystem
     /*
      * Add a file to the mediaLibrary for the given media.
      */
-    public function add(string $file, Media $media, string $targetFileName = '')
+    public function add(Model $model, string $file, Media $media, string $targetFileName = '')
     {
         $this->copyToMediaLibrary($file, $media, false, $targetFileName);
 
         event(new MediaHasBeenAdded($media));
 
-        if ($this->config->get('laravel-medialibrary.enable_file_manipulator', false)) {
-            app(FileManipulator::class)->createDerivedFiles($media);
-        }
+        app(FileManipulator::class)->createDerivedFiles($media, $model);
     }
 
     /*

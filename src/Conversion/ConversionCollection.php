@@ -2,9 +2,8 @@
 
 namespace Spatie\MediaLibrary\Conversion;
 
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Spatie\MediaLibrary\Exceptions\InvalidConversion;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
 use Spatie\MediaLibrary\Media;
@@ -13,26 +12,26 @@ class ConversionCollection extends Collection
 {
     /**
      * @param \Spatie\MediaLibrary\Media $media
-     *
+     * @param Model $model
      * @return static
      */
-    public static function createForMedia(Media $media)
+    public static function createForMedia(Media $media, Model $model)
     {
-        return (new static())->setMedia($media);
+        return (new static())->setMedia($media, $model);
     }
 
     /**
      * @param \Spatie\MediaLibrary\Media $media
-     *
+     * @param Model $model
      * @return $this
      */
-    public function setMedia(Media $media)
+    public function setMedia(Media $media, Model $model)
     {
         $this->items = [];
 
-        //$this->addConversionsFromRelatedModel($media);
+        $this->addConversionsFromRelatedModel($media, $model);
 
-        //$this->addManipulationsFromDb($media);
+        $this->addManipulationsFromDb($media);
 
         return $this;
     }
@@ -62,17 +61,10 @@ class ConversionCollection extends Collection
      * the given media.
      *
      * @param \Spatie\MediaLibrary\Media $media
+     * @param Model $model
      */
-    protected function addConversionsFromRelatedModel(Media $media)
+    protected function addConversionsFromRelatedModel(Media $media, Model $model)
     {
-        $modelName = Arr::get(Relation::morphMap(), $media->model_type, $media->model_type);
-
-        /*
-         * To prevent an sql query create a new model instead
-         * of the using the associated one
-         */
-        $model = new $modelName();
-
         if ($model instanceof HasMediaConversions) {
             $model->registerMediaConversions();
         }

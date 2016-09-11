@@ -2,6 +2,7 @@
 
 namespace Spatie\MediaLibrary;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Spatie\Glide\GlideImage;
 use Spatie\MediaLibrary\Conversion\Conversion;
@@ -16,10 +17,15 @@ class FileManipulator
      * Create all derived files for the given media.
      *
      * @param \Spatie\MediaLibrary\Media $media
+     * @param Model $model
      */
-    public function createDerivedFiles(Media $media)
+    public function createDerivedFiles(Media $media, Model $model)
     {
-        $profileCollection = ConversionCollection::createForMedia($media);
+        if ($media->type !== Media::TYPE_IMAGE) {
+            return;
+        }
+
+        $profileCollection = ConversionCollection::createForMedia($media, $model);
 
         $this->performConversions(
             $profileCollection->getNonQueuedConversions($media->collection_name),
