@@ -319,6 +319,9 @@ class FileAdder
 
         $media->size = filesize($this->pathToFile);
         $media->custom_properties = $this->customProperties;
+
+        $media->mime_type = \Spatie\MediaLibrary\Helpers\File::getMimetype($this->pathToFile);
+
         $media->manipulations = [];
 
         $media->fill($this->properties);
