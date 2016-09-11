@@ -187,8 +187,6 @@ trait HasMediaTrait
     {
         $this->removeMediaItemsNotPresentInArray($newMediaArray, $collectionName);
 
-        $orderColumn = 1;
-
         $updatedMedia = [];
         foreach ($newMediaArray as $newMediaItem) {
             $mediaClass = config('laravel-medialibrary.media_model');
@@ -205,8 +203,6 @@ trait HasMediaTrait
             if (array_key_exists('custom_properties', $newMediaItem)) {
                 $currentMedia->custom_properties = $newMediaItem['custom_properties'];
             }
-
-            $currentMedia->order_column = $orderColumn++;
 
             $currentMedia->save();
 

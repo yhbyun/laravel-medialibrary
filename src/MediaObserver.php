@@ -6,7 +6,7 @@ class MediaObserver
 {
     public function creating(Media $media)
     {
-        $media->setHighestOrderNumber();
+        // $media->setHighestOrderNumber();
     }
 
     public function updating(Media $media)

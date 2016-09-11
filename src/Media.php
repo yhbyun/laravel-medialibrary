@@ -16,8 +16,6 @@ use Spatie\MediaLibrary\UrlGenerator\UrlGeneratorFactory;
 
 class Media extends Model
 {
-    use SortableTrait;
-
     const TYPE_OTHER = 'other';
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';

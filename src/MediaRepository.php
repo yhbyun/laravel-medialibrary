@@ -57,7 +57,7 @@ class MediaRepository
 
                 return $mediaItem->collection_name == $collectionName;
             })->sortBy(function (Media $media) {
-                return $media->order_column;
+                return $media->id;
             })->values();
 
             return $media;
@@ -70,7 +70,7 @@ class MediaRepository
         }
 
         $media = $query
-            ->orderBy('order_column')
+            ->orderBy('id')
             ->get();
 
         return $media;
