@@ -30,9 +30,9 @@ class ConversionCollection extends Collection
     {
         $this->items = [];
 
-        $this->addConversionsFromRelatedModel($media);
+        //$this->addConversionsFromRelatedModel($media);
 
-        $this->addManipulationsFromDb($media);
+        //$this->addManipulationsFromDb($media);
 
         return $this;
     }
