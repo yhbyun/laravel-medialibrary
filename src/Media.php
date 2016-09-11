@@ -23,6 +23,9 @@ class Media extends Model
     const TYPE_VIDEO = 'video';
     const TYPE_SVG = 'svg';
     const TYPE_PDF = 'pdf';
+    const TYPE_WORD = 'word';
+    const TYPE_EXCEL = 'excel';
+    const TYPE_PPT = 'powerpoint';
 
     protected $guarded = ['id', 'disk', 'file_name', 'size', 'model_type', 'model_id'];
 
@@ -115,6 +118,18 @@ class Media extends Model
     }
 
     /**
+     * Determine type icon
+     *
+     * @return string
+     */
+    public function getTypeIconAttribute()
+    {
+        $type = $this->type !== self::TYPE_OTHER ? 'file-'.$this->type : 'file';
+
+        return 'fa fa-' . $type . '-o';
+    }
+
+    /**
      * Determine the type of a file from its file extension.
      *
      * @return string
@@ -132,6 +147,18 @@ class Media extends Model
             }
         }
 
+        if ($extension == 'doc') {
+            return static::TYPE_WORD;
+        }
+
+        if ($extension == 'ppt') {
+            return static::TYPE_PPT;
+        }
+
+        if (in_array($extension, ['xls', 'xlsx', 'csv'])) {
+            return static::TYPE_EXCEL;
+        }
+
         return static::TYPE_OTHER;
     }
 
@@ -140,19 +167,24 @@ class Media extends Model
      */
     public function getTypeFromMimeAttribute() : string
     {
-        if ($this->getDiskDriverName() !== 'local') {
-            return static::TYPE_OTHER;
+        if (!($mime = $this->mime_type)) {
+            if ($this->getDiskDriverName() !== 'local') {
+                return static::TYPE_OTHER;
+            }
+
+            $mime = $this->getMimeAttribute();
         }
 
-        $imageGenerators = $this->getImageGenerators()
-            ->map(function (string $className) {
-                return app($className);
-            });
+        if (in_array($mime, ['image/jpeg', 'image/gif', 'image/png'])) {
+            return static::TYPE_IMAGE;
+        }
 
-        foreach ($imageGenerators as $imageGenerator) {
-            if ($imageGenerator->canHandleMime($this->getMimeAttribute())) {
-                return $imageGenerator->getType();
-            }
+        if (in_array($mime, ['video/webm', 'video/mpeg', 'video/mp4', 'video/quicktime'])) {
+            return static::TYPE_VIDEO;
+        }
+
+        if ($mime === 'application/pdf') {
+            return static::TYPE_PDF;
         }
 
         return static::TYPE_OTHER;
