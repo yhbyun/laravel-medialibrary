@@ -18,6 +18,7 @@ class MediaObserver
 
     public function updated(Media $media)
     {
+        /*
         if (is_null($media->getOriginal('model_id'))) {
             return;
         }
@@ -25,6 +26,7 @@ class MediaObserver
         if ($media->manipulations !== $media->getOriginal('manipulations')) {
             app(FileManipulator::class)->createDerivedFiles($media);
         }
+        */
     }
 
     public function deleted(Media $media)
