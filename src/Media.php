@@ -130,15 +130,22 @@ class Media extends Model
      */
     public function getTypeFromExtensionAttribute()
     {
-        $imageGenerators = $this->getImageGenerators()
-            ->map(function (string $className) {
-                return app($className);
-            });
+        $extension = strtolower($this->extension);
 
-        foreach ($imageGenerators as $imageGenerator) {
-            if ($imageGenerator->canHandleExtension(strtolower($this->extension))) {
-                return $imageGenerator->getType();
-            }
+        if (in_array($extension, ['png', 'jpg', 'jpeg', 'gif'])) {
+            return static::TYPE_IMAGE;
+        }
+
+        if (in_array($extension, ['webm', 'mov', 'mp4'])) {
+            return static::TYPE_VIDEO;
+        }
+
+        if ($extension == 'pdf') {
+            return static::TYPE_PDF;
+        }
+
+        if ($extension == 'svg') {
+            return static::TYPE_SVG;
         }
 
         if ($extension == 'doc') {
