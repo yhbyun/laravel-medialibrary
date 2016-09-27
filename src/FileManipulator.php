@@ -47,11 +47,13 @@ class FileManipulator
      */
     public function performConversions(ConversionCollection $conversions, Media $media)
     {
+        /*
         $imageGenerator = $this->determineImageGenerator($media);
 
         if (! $imageGenerator) {
             return;
         }
+        */
 
         $tempDirectory = $this->createTempDirectory();
 
@@ -60,7 +62,7 @@ class FileManipulator
         app(Filesystem::class)->copyFromMediaLibrary($media, $copiedOriginalFile);
 
         foreach ($conversions as $conversion) {
-            $copiedOriginalFile = $imageGenerator->convert($copiedOriginalFile, $conversion);
+            //$copiedOriginalFile = $imageGenerator->convert($copiedOriginalFile, $conversion);
 
             $conversionResult = $this->performConversion($media, $conversion, $copiedOriginalFile);
 
