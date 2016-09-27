@@ -2,6 +2,7 @@
 
 namespace Spatie\MediaLibrary\HasMedia;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\Conversion\Conversion;
 use Spatie\MediaLibrary\Events\CollectionHasBeenCleared;
@@ -146,7 +147,7 @@ trait HasMediaTrait
      * for first media for the given collectionName.
      * If no profile is given, return the source's url.
      */
-    public function getFirstMediaUrl(string $collectionName = 'default', string $conversionName = '') : string
+    public function getFirstMediaUrl(string $collectionName = 'default', string $conversionName = '', Model $model = null) : string
     {
         $media = $this->getFirstMedia($collectionName);
 
@@ -154,7 +155,7 @@ trait HasMediaTrait
             return false;
         }
 
-        return $media->getUrl($conversionName);
+        return $media->getUrl($conversionName, $model);
     }
 
     /*
