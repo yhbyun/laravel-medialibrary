@@ -267,6 +267,7 @@ trait HasMediaTrait
             throw MediaCannotBeDeleted::doesNotBelongToModel($media, $this);
         }
 
+        $this->media()->detach($mediaId);
         $media->delete();
     }
 
