@@ -38,13 +38,12 @@ class Media extends Model
     ];
 
     /**
-     * Create the polymorphic relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @param $model
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function model()
+    public function models($model)
     {
-        return $this->morphTo();
+        return $this->morphedByMany($model, 'model', 'media_attachable');
     }
 
     /**
