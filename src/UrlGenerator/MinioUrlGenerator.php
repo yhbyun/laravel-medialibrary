@@ -11,6 +11,10 @@ class MinioUrlGenerator extends BaseUrlGenerator
      */
     public function getUrl() : string
     {
+        if (config('laravel-medialibrary.minio.multiple_disk')) {
+            return config('laravel-medialibrary.minio.domain').'/'.$this->media->disk.'/'.$this->getPathRelativeToRoot();
+        }
+
         return config('laravel-medialibrary.minio.domain').'/'.$this->getPathRelativeToRoot();
     }
 
