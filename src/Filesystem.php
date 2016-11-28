@@ -130,8 +130,8 @@ class Filesystem
             $pathGenerator->getPathForConversions($media) :
             $pathGenerator->getPath($media);
 
-        // FIXME: minio는 디텍로티 생성 지원하지 않는다.
-        if (!Str::startsWith($media->disk, 'minio')) {
+        // minio는 디렉토리 생성을 지원하지 않고, 디렉토리 생성 명령을 따로 줄 필요가 없다.
+        if ($media->getDiskDriverName() !== 'minio') {
             $this->filesystem->disk($media->disk)->makeDirectory($directory);
         }
 
