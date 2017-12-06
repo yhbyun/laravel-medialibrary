@@ -1,5 +1,8 @@
 {
-  "name": "spatie/laravel-medialibrary",
+  "name": "yhbyun/laravel-medialibrary",
+  "replace": {
+    "spatie/laravel-medialibrary": "self.version"
+  },
   "description": "Associate files with Eloquent models",
   "keywords": [
     "spatie",
