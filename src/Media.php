@@ -3,6 +3,7 @@
 namespace Spatie\MediaLibrary;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\ImageGenerators\FileTypes\Image;
 use Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf;
@@ -268,5 +269,14 @@ class Media extends Model
         return $conversions->map(function (Conversion $conversion) {
             return $conversion->getName();
         })->toArray();
+    }
+
+    /*
+     * Let's be nice and provide an ordered scope.
+     * SortableTrait에서 이 함수만 차용함
+     */
+    public function scopeOrdered(Builder $query) : Builder
+    {
+        return $query->orderBy('order_column');
     }
 }
